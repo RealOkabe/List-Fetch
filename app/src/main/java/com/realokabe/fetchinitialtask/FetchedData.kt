@@ -2,7 +2,7 @@ package com.realokabe.fetchinitialtask
 
 import com.google.gson.annotations.SerializedName
 
-class fetchedData {
+class FetchedData {
     @SerializedName("id")
     val id: Int = 0
 

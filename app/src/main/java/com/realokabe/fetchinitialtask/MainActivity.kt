@@ -48,13 +48,11 @@ fun getFetchData() {
     val fetchedData: FetchAPI = retrofit.create(FetchAPI::class.java)
     GlobalScope.launch {
         val result = fetchedData.getFetchData()
-        if (result != null) {
-            for (i in result.body()!!) {
-                Log.i("*****", i.id.toString())
-                break
-            }
+        val nameList:MutableList<FetchedData> = result.body()!!.toMutableList()
+        Log.i("*****", nameList.size.toString())
+        nameList.removeAll{ (it.name  == "" || it.name == null) }
+        Log.i("*****", nameList.size.toString())
         }
-    }
 }
 
 @Composable

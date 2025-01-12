@@ -1,8 +1,6 @@
 package com.realokabe.fetchinitialtask
 
-import android.graphics.Paint.Align
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,9 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,16 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import com.realokabe.fetchinitialtask.ui.theme.FetchInitialTaskTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -69,9 +60,7 @@ suspend fun getFetchData(): MutableMap<Int, List<FetchedData>> {
         val result = fetchedData.getFetchData()
         // Using mutable list to remove empty and null names
         val nameList: MutableList<FetchedData> = result.body()!!.toMutableList()
-        Log.i("*****", nameList.size.toString())
         nameList.removeAll { (it.name == "" || it.name == null) }
-        Log.i("*****", nameList.size.toString())
         // Grouping by listId and sorting
         val groupedNameList: MutableMap<Int, List<FetchedData>> =
             nameList.groupBy { it.listId }.toSortedMap()
@@ -90,12 +79,14 @@ fun ShowList(dataMap: MutableMap<Int, List<FetchedData>>) {
         modifier = Modifier.fillMaxSize()
             .padding(16.dp)
     ) {
+        // Added a spacer on top because the list started from top of the screen.
+        item{ Spacer(modifier = Modifier.height(32.dp)) }
         dataMap.forEach {
             (listId, dataList) ->
             item {
                 Text(
                     text = "List ID: $listId",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
